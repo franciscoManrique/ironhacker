@@ -7,11 +7,7 @@ const User = require("../models/user.model");
 module.exports.doCreate = (req, res, next) => {    
     const me = req.user._id.toString();
     const friend = req.params.id;
-    console.log(me);
-    console.log('--------');
-     
-    console.log(req.params);
-    
+
     Friendship.find({ users: { $all: [me, friend] } })
     .then(friendship => {
         if (friendship && friendship.length > 0) {

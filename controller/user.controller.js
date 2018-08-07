@@ -261,24 +261,43 @@ module.exports.friendList = (req, res, next) => {
       next(error);
     }
   });
-  
 };
 
 
 module.exports.delete = (req, res, next) => {
-  console.log("DO DELETE USER");
-  
-  User.findByIdAndRemove(req.params.id)
-  
-  .then(() => {
-    res.redirect("/users/list");
-    console.log("USER DELETED");
+console.log(req.params.id);
+
+  Promise.all([
+    Friendship.find({ $or: [{ owner: req.params.id }, { receiver: req.params.id } ]}),
+    User.findById(req.params.id),
+  ])
+  .then(([friendship, user]) =>{
+    console.log('AAA' + friendship);
+    console.log('BBB' + user);
+    
   })
-  .catch(error => {
-    if (error instanceof mongoose.Error.CastError) {
-      next(createError(404, "user not found"));
-    } else {
-      next(error);
-    }
-  });
+
+
+  // console.log("DO DELETE USER");
+  // Friendship.find({ $or: [{ owner: req.params._id }, { receiver: req.params._id  } ]})
+  // .then(friendshipOfDeletedUser =>{
+  //   console.log(friendshipOfDeletedUser);
+  //   if (friendshipOfDeletedUser.length > 0) {
+      
+  //   }
+  // })
+  // User.findByIdAndRemove(req.params.id)
+  
+  // .then(() => {
+  //   res.redirect("/users/list");
+  //   console.log("USER DELETED");
+  // })
+  // .catch(error => {
+  //   if (error instanceof mongoose.Error.CastError) {
+  //     next(createError(404, "user not found"));
+  //   } else {
+  //     next(error);
+  //   }
+  // });
 };
+

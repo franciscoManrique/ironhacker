@@ -1,0 +1,15 @@
+{{#if error.noFriends}}
+<div class="alert alert-danger">{{error.noFriends}}</div>
+{{else}}
+    {{#each friends as |friend|}}
+    <div class="card">
+        <img class="card-img-top" src="{{friend.image}}" alt="Card image cap">
+        <div class="card-body">
+         <h5 class="card-title">{{friend.name}}</h5>
+         <p class="card-text">{{friend.career}}</p>
+         <a href="/users/{{friend.id}}" class="btn btn-primary btn-sm">See profile</a>
+        </div>
+    </div>
+    {{/each}}
+
+{{/if}}

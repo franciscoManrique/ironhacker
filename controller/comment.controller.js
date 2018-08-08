@@ -37,7 +37,6 @@ module.exports.doCreate = (req, res, next) =>{
 
 module.exports.doDelete = (req, res, next) =>{
     
-    // console.log(req.user._id);
     Comment.findById(req.params.commentId)
     .populate('author')
     .then(comment =>{

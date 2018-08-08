@@ -81,6 +81,14 @@ module.exports = (hbs) => {
         } else{
             return options.inverse(this);
         }
+    });      
+
+    hbs.registerHelper('datasetForScroll', function(date, options) {
+        let objFecha = new Date(date);        
+        let opcionesFecha = {day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
+        let fechaFormateada = objFecha.toLocaleString('en-GB', opcionesFecha);
+        
+        return date ? fechaFormateada : undefined;// si no recibe fecha el helper da undefined
     });       
 };
 

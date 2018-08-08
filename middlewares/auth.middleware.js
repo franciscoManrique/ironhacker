@@ -40,17 +40,3 @@ module.exports.checkRole = role =>{
     };
 };
 
-module.exports.checkFriendship = friendship =>{
-    
-    // return(req, res, next) =>{
-    //     if (req.user.role === role) {
-    //         next();
-    //         console.log('PASSED MIDDLEWARE TO DELETE USER');   
-    //     } else{
-    //         console.log('NOT PRIVILAGES  TO DELETE');
-    //         next(createError(403, `insufficient privilages ${req.user.name}`));    
-    //     }
-    // };
-};
-
-

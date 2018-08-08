@@ -54,7 +54,7 @@ module.exports.doCreate = (req, res, next) => {
 //   ])
 //   .then(([user, posts, comments]) => { //destructor 
 //         console.log(comments);
-        
+
 //     if (!user) {
 //       next(createError(404));
 //     } else {
@@ -81,18 +81,19 @@ module.exports.doCreate = (req, res, next) => {
 
 
 module.exports.profile = (req, res, next) => {
-  console.log(req.user);
   
   Promise.all([
     User.findById(req.params.id),
     Post.find({ author: req.params.id })
     .populate('author')
   ])
-  .then(([user, posts]) => { //destructor     
-     return Comment.find({post: {$in:posts}})
+  .then(([user, posts]) => { //destructor  
+    
+    return Comment.find({post: {$in:posts}})
     .populate('author')
     .populate('post')
-    .then(comments =>{
+    .then(comments =>{      
+      
       if (!user) {
         next(createError(404));
       } else {
@@ -121,8 +122,8 @@ module.exports.profile = (req, res, next) => {
 
 module.exports.list = (req, res, next) => {
   //ME QUITO ASI NO SALGO YO
-  const criteria = { '_id': { $ne: req.user._id } };
-  
+  const criteria = {'_id': { $ne: req.user._id }};
+ 
   if (req.query.name) {
     criteria.name = req.query.name;
   }
@@ -249,6 +250,24 @@ module.exports.friendList = (req, res, next) => {
       })
       
       res.render('friends/list', {friends, friendId});
+      
+      
+      // const friendsArray = friendships.map(element=>{
+      //   if (!req.user._id.equals(element.owner._id) && !req.user._id.equals(element.receiver._id)) {          
+      //     next(createError(403, `Insufficient privilages STALKER ${req.user.name}`));
+      //   } else{          
+      //     return element.users.filter(el=>{            
+      //       return !el.equals(friendId);
+      //     });          
+      //     const friends = friendsArray.map(elem =>{
+      //       console.log(elem);
+      
+      //       return elem[0]; 
+      //     }) 
+      //     res.render('friends/list', {friends, friendId});
+      //   }
+      // })
+      
     } else{
       res.render('friends/list', {error: {noFriends: 'You dont have friends LOSER!'}});
     }
@@ -263,41 +282,24 @@ module.exports.friendList = (req, res, next) => {
   });
 };
 
-
-module.exports.delete = (req, res, next) => {
-console.log(req.params.id);
+module.exports.doDelete = (req, res, next) => {
 
   Promise.all([
-    Friendship.find({ $or: [{ owner: req.params.id }, { receiver: req.params.id } ]}),
-    User.findById(req.params.id),
+    Friendship.deleteMany({ $or: [{ owner: req.params.id }, { receiver: req.params.id } ]}),
+    User.findByIdAndRemove(req.params.id),
+    Post.find({author: req.params.id}),
   ])
-  .then(([friendship, user]) =>{
-    console.log('AAA' + friendship);
-    console.log('BBB' + user);
+  .then(([friendships, users, posts])=>{ 
     
+    return Comment.deleteMany({post:posts})
+    .then((comments) =>{      
+      return Post.deleteMany({author: req.params.id})
+      .then((posts)=>{
+        res.redirect('/users/list');
+      })
+    })
+  }) 
+  .catch(error =>{
+    console.log(error);
   })
-
-
-  // console.log("DO DELETE USER");
-  // Friendship.find({ $or: [{ owner: req.params._id }, { receiver: req.params._id  } ]})
-  // .then(friendshipOfDeletedUser =>{
-  //   console.log(friendshipOfDeletedUser);
-  //   if (friendshipOfDeletedUser.length > 0) {
-      
-  //   }
-  // })
-  // User.findByIdAndRemove(req.params.id)
-  
-  // .then(() => {
-  //   res.redirect("/users/list");
-  //   console.log("USER DELETED");
-  // })
-  // .catch(error => {
-  //   if (error instanceof mongoose.Error.CastError) {
-  //     next(createError(404, "user not found"));
-  //   } else {
-  //     next(error);
-  //   }
-  // });
 };
-

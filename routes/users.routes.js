@@ -7,7 +7,7 @@ const constants = require('../constants');
 router.get('/:id/friends/list', middleware.auth, userController.friendList);
 
 router.get('/confirm', middleware.notAuth, userController.confirm);
-router.post('/:id/delete', middleware.auth, middleware.checkRole(constants.user.ADMIN), userController.delete);
+router.post('/:id/delete', middleware.auth, middleware.checkRole(constants.user.ADMIN), userController.doDelete);
 
 router.get('/create', middleware.notAuth, userController.create);
 router.post('/create', middleware.notAuth, userController.doCreate);

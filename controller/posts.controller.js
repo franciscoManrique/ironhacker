@@ -111,7 +111,7 @@ module.exports.doDelete = (req, res, next) => {
     Post.findByIdAndRemove(postId),
     Comment.deleteMany({post:postId})
   ])
-  .then(()=>{
+  .then(()=>{ 
     console.log("DELETED POST AND COMMENTS ON THIS POST");    
     res.redirect(`/${req.params.userId}`);
   })

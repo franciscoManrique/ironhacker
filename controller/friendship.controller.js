@@ -7,7 +7,7 @@ const User = require("../models/user.model");
 module.exports.doCreate = (req, res, next) => {    
     const me = req.user._id.toString();
     const friend = req.params.id;
-
+    
     Friendship.find({ users: { $all: [me, friend] } })
     .then(friendship => {
         if (friendship && friendship.length > 0) {
@@ -38,7 +38,7 @@ module.exports.doCreate = (req, res, next) => {
 
 module.exports.list = (req, res, next) => {
     const me = req.user._id;
-    console.log(me);
+    console.log(req.params.id);
     
     Friendship.find({ $and: [ { users: { $in: [me]}}, { status:'PENDING'} ] })
     .populate('users')
@@ -85,5 +85,19 @@ module.exports.acceptFriendship = (req, res, next) => {
 };
 
 module.exports.doDelete = (req, res, next) => {
-   
+    
+    Friendship.findOne({$or:[{owner:req.user._id},{receiver:req.user._id}]})
+    .then((friendship)=>{
+        friendship.remove();
+        
+        res.redirect(`/users/${req.params.id}`);
+    })
+    .catch(error => {
+        if (error instanceof mongoose.Error.CastError) {
+            next(createError(404, `cast error`));
+        } else{
+            next(error);
+        }
+    });
 };
+

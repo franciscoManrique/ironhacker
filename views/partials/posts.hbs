@@ -2,7 +2,7 @@
   
   {{#each posts as |post|}}
 
-    <div class="row">
+    <div class="row" data-id="{{datasetForScroll post.createdAt}}">
         <div class="" style="width:100%; padding: 20px; margin: 30px; border:1px solid #ebe6e6; border-radius: 10px;" >
             <img class="mr-3" src="{{../user.image}}" style="width:60px;" alt="image">
             <div class="media-body">
@@ -48,7 +48,7 @@
                          <div class="row hoverIncreaseSize"> 
                              <div class="col-1"></div>
                             <div class="col-8">
-                                <img src="{{comment.author.image}}" style="width:23px;" alt="image"> <strong><small>{{capitalize comment.author.name}}</small></strong> - <small>{{datetime comment.createdAt}}</small>
+                                <img src="{{#if comment.author}}{{comment.author.image}}{{else}}/images/anonimous.png{{/if}}"style="width:23px;" alt="image"> <strong><small>{{#if comment.author}}{{capitalize comment.author.name}}{{else}}Anonimous{{/if}}</small></strong> - <small>{{datetime comment.createdAt}}</small>
                                 <p>{{capitalize comment.text}}</p>
                             </div>
                             <div class="col-1">
@@ -56,6 +56,7 @@
                             </div>
 
                             <div class="col-1"> 
+                               
                                 <form action="/users/{{../user.id}}/posts/{{post.id}}/like" method="POST" class="formInline">
                                     <button type="submit" class="removeBorder" style="background-color: transparent;"><i class="far fa-thumbs-up" style="cursor:pointer;"></i></button>
                                     <span>{{post.likes}}</span> 
@@ -69,7 +70,7 @@
                                 </div> 
                            {{/isOwneredByOwnSessionCommentRelated}}
                         </div> 
-                        <hr>
+                        <hr> 
                         {{/isYourCommentOverPost}} 
                         
                      {{/each}}

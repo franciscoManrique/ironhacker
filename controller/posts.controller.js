@@ -6,16 +6,23 @@ const User = require("./../models/user.model");
 const Post = require("./../models/posts.model");
 const Comment = require("./../models/comments.model");
 
-let likesCounter = 0;
-
 module.exports.doCreate = (req, res, next) => {
   const userId = req.params.userId;
-  //1. FORMA LARGA  
+  console.log(req.body);
+  console.log(req.file);
+  
+  
+  const criteria = {title: req.body.title, text: req.body.text, author: userId};
+  
+  if (req.file) {
+    criteria.image = req.file.filename;
+  }
+  
   User.findById(userId)
   .then(user => {
     if (user) {
       
-      const post = new Post({ title: req.body.title, text: req.body.text, author: userId });
+      const post = new Post(criteria);
       
       post.save()
       .then(post => {
@@ -45,64 +52,7 @@ module.exports.doCreate = (req, res, next) => {
   });
   
   
-  //2. REFRACTORIZADO SIN PROMISE.ALL, aqui en catch user tampoco existe!!!
-  // User.findById(userId)
-  // .then(user => {
-  //   if (!user) {
-  //     next(createError(404, 'user does not exist'));
-  //   } else{
-  
-  //     let post = new Post({ title: req.body.title, text: req.body.text, author: userId });
-  //     return post.save()
-  //     .then(post => {
-  //       res.redirect(`/${user._id}`);
-  //     });
-  //   }
-  // })
-  // .catch(error => {
-  
-  //   if (error instanceof mongoose.Error.ValidationError) {
-  //     Post.find({ author: userId })
-  //     .then(posts => {
-  //       res.render("users/profile", { user: user,  errors: error.errors });
-  //     });
-  
-  //   } else if(error instanceof mongoose.Error.CastError){
-  //     next(createError(404, 'cast error'));
-  //   } else {
-  //     next(error);
-  //   } 
-  // });
-  
-  
-  // 3. PROMISE.ALL aqui no puedo hacerla 
-  
-  
 };
-
-
-
-// module.exports.doDelete = (req, res, next) => {
-//   const postId = req.params.postId;
-
-//   Post.findByIdAndRemove(postId)
-//   .then(post => {
-//     console.log("DO DELETE POST AND COMMENTS ON THIS POST");    
-//     Comment.deleteMany({post:postId})
-//     .then(posts=>{
-//       console.log(posts);
-//     })
-
-//     res.redirect(`/${req.params.userId}`);
-//   })
-//   .catch(error => {
-//     if (error instanceof mongoose.Error.CastError) {
-//       next(createError(404));
-//     } else {
-//       next(error);
-//     }
-//   });
-// };
 
 
 module.exports.doDelete = (req, res, next) => {

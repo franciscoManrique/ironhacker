@@ -123,7 +123,7 @@ module.exports.profile = (req, res, next) => {
 module.exports.list = (req, res, next) => {
   //ME QUITO ASI NO SALGO YO
   const criteria = {'_id': { $ne: req.user._id }};
- 
+  
   if (req.query.name) {
     criteria.name = req.query.name;
   }
@@ -183,15 +183,25 @@ module.exports.update = (req, res, next) => {
 module.exports.doUpdate = (req, res, next) => {
   const id = req.params.id;
   
+  const criteria = {
+    $set:req.body
+  };
+  
+  if (req.file) {
+    criteria.image = req.file.filename;
+  }
+  
   delete req.body.password;
   if (req.user.role !== constants.user.ADMIN) {
     delete req.body.role;
     // req.body.role = 'GUEST';
   }
   
-  User.findByIdAndUpdate(id,{ $set: req.body },{ runValidators: true, new: true })
+  User.findByIdAndUpdate(id,criteria,{ runValidators: true, new: true })
   .then(user => {
     if (user) {
+      console.log(user);
+      
       console.log("USER UPDATED");
       res.redirect(`/users/${id}/`);
     } else {
@@ -282,8 +292,13 @@ module.exports.friendList = (req, res, next) => {
   });
 };
 
-module.exports.doDelete = (req, res, next) => {
+module.exports.showGallery = (req, res, next) => {
 
+
+};
+
+module.exports.doDelete = (req, res, next) => {
+  
   Promise.all([
     Friendship.deleteMany({ $or: [{ owner: req.params.id }, { receiver: req.params.id } ]}),
     User.findByIdAndRemove(req.params.id),

@@ -6,7 +6,8 @@ const commentsSchema = mongoose.Schema({
         required: 'Comment is required'
     },
     author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    post: {type: mongoose.Schema.Types.ObjectId, ref: 'Post'}
+    post: {type: mongoose.Schema.Types.ObjectId, ref: 'Post'},
+    likes: Number,
 
 }, {timestamps: true});
 

@@ -6,13 +6,13 @@
     <div>
         {{#isNotMe pendingRequest.owner ../session}}
             <div class="alert alert-info">
-                 <img src="{{pendingRequest.receiver.image}}" style="width: 50px; height:50px;" alt="image">
+                 <img src="/documents/{{pendingRequest.receiver.image}}" style="width: 50px; height:50px;" alt="image">
                 <a href="/users/{{pendingRequest.receiver._id}}">{{pendingRequest.receiver.name}} {{pendingRequest.receiver.lastname}}</a>
                 <span class="badge badge-danger" style="float:right;">INVITATION SENT</span>
             </div>
             {{else}}
             <div class="alert alert-success">
-                 <img src="{{pendingRequest.owner.image}}" style="width: 50px; height:50px;" alt="image">
+                 <img src="/documents/{{pendingRequest.owner.image}}" style="width: 50px; height:50px;" alt="image">
                 <a href="/users/{{pendingRequest.owner._id}}">{{pendingRequest.owner.name}} {{pendingRequest.owner.lastname}}</a>
                 <form action="/friendship/{{pendingRequest._id}}/accept" method="post">
                   <button type="submit" class="badge badge-warning" style="float:right;">ACCEPT REQUEST</button>

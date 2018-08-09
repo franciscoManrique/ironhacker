@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const postsSchema = mongoose.Schema({
     title: {
-        type: String
+        type: String,
+        maxlength: 18
     },
     text: {
         type: String,
@@ -12,7 +13,13 @@ const postsSchema = mongoose.Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User'
-    }
+    },
+    image: {
+        type: String,
+        path: String,
+        originalName: String,
+    },
+    numberOfComments:Number
 }, { timestamps: true });
 
 const Post = mongoose.model('Post', postsSchema);

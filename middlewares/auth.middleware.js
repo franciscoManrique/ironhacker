@@ -1,4 +1,5 @@
 const constants = require('../constants');
+const Friendship = require('../models/frienship.model');
 const createError = require('http-errors');
 
 module.exports.auth = (req, res, next) =>{    
@@ -38,5 +39,42 @@ module.exports.checkRole = role =>{
             next(createError(403, `insufficient privilages ${req.user.name}`));    
         }
     };
+};
+
+
+
+
+// const exists = (users, ownerId) => {
+//     for (let i = -1; ++i < users.length;) {
+//         if (users[i].equals(ownerId)) return true;        
+//     }
+//     return false;
+// };
+
+// // transducers siguen iterando despues de tener un return excepto el for 
+
+// const isOwner = (ownerId, users) => exists(users, ownerId);
+// const isPartner = (visiting, users) => exists(users, visiting);
+
+module.exports.blockFriendList = (req, res, next) =>{
+    const ownerId = req.user._id;
+    const visiting = req.params.id;
+    
+    Friendship.findOne({
+        $and: [
+            {$or: [{ owner: ownerId }, { receiver: ownerId }]},
+            {$or: [{ owner: visiting }, { receiver: visiting }]}
+        ]
+    })
+    .then(friendship => {
+        if (friendship) {
+            next();
+        } else {
+            next(createError(403, 'insufficient privilages'));
+        }
+    })
+    .catch(error =>{
+        console.log(error);  
+    });    
 };
 

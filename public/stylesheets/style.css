@@ -10,6 +10,44 @@ body {
   font: 14px "Montserrat", Helvetica, Arial, sans-serif;
 }
 
+/* .fondo-paisaje {
+  background: url('/images/montanhas.jpg');
+  background-size: cover;
+  position: fixed;
+  width: 150%;
+  height: 100%;
+  bottom:0;
+  left:0;
+  z-index: -1;
+} */
+
+.globo1, .globo2  {
+  background: url('/images/globo.png') no-repeat center / contain;
+  position: fixed;
+  z-index: 999;
+}
+.globo1  {
+  top: 100px;
+  right:20px;
+  width: 100px;
+  height: 80px;
+}
+
+.globo2  {
+  bottom: 0;
+  right: 80px;
+  width: 150px;
+  height: 100px;
+}
+
+.comment{
+  width: 100%;
+  box-shadow: 1px 1px 46px 1px;
+  padding: 20px;
+  margin: 30px;
+  border-radius: 3px;
+}
+
 a {
   color: rgb(7, 96, 131);
   text-decoration: none !important;
@@ -22,7 +60,7 @@ nav{
 input{
   margin: 5px 0;
   border-radius: 4px !important;
-  height: 41px !important;
+  height: 31px !important;
 }
 
 textarea{
@@ -54,9 +92,6 @@ nav i{
   float: right;
 }
 
-img{
-  border-radius: 5px;
-}
 
 .imagePost{
   width: 200px;
@@ -116,7 +151,7 @@ li{
 }
 
 .floatRight{
-float: right;
+  float: right;
 }
 
 label{
@@ -192,3 +227,6 @@ textarea:focus, input:focus{
 
 
 
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-8, .col-9, .col-10{
+  /* border: 1px solid red; */
+}

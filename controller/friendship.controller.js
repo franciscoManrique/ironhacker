@@ -62,18 +62,13 @@ module.exports.list = (req, res, next) => {
     });
 };
 
-module.exports.acceptFriendship = (req, res, next) => {
-    Friendship.findByIdAndUpdate(req.params.id, { $set: { status: "FRIENDS" } }, { new: true })
-    .then(friendship => {     
-        return User.findOneAndUpdate(friendship.receiver, {$inc: {numberOfFriends: 1}}, {runValidators: true,  new: true })
-        .then((user)=>{
-            if (user) {                
-                console.log('FRIENDSHIP ACCEPTED, ONE MORE FRIEND');        
-                res.redirect(`/friendship/${req.user._id}/list`);
-            } else{
-                next(error);
-            }
-        });
+module.exports.acceptFriendship = (req, res, next) => {    
+    Friendship.findByIdAndUpdate(req.params.id, { $set: { status: "FRIENDS" } })
+    .then(friendship=>{
+        return User.updateMany({'_id': {$in:[friendship.owner, friendship.receiver]}}, {$inc: {numberOfFriends: 1}});
+    })
+    .then(()=>{
+        res.redirect(`/friendship/${req.user._id}/list`);
     })
     .catch(error => {         
         if (error instanceof mongoose.Error.CastError) {
@@ -86,10 +81,11 @@ module.exports.acceptFriendship = (req, res, next) => {
 
 module.exports.doDelete = (req, res, next) => {
     
-    Friendship.findOne({$or:[{owner:req.user._id},{receiver:req.user._id}]})
-    .then((friendship)=>{
-        friendship.remove();
-        
+    Promise.all([
+        User.updateMany({'_id': {$in:[req.params.id, req.user._id]}}, {$inc: {numberOfFriends: -1}}),
+        Friendship.deleteOne({$and:[{$or:[{owner: req.user._id, receiver: req.params.id}, {owner: req.params.id, receiver: req.user._id}]},{status:'FRIENDS'}]})
+    ])
+    .then((a)=>{        
         res.redirect(`/users/${req.params.id}`);
     })
     .catch(error => {
@@ -99,5 +95,6 @@ module.exports.doDelete = (req, res, next) => {
             next(error);
         }
     });
+    
 };
 

@@ -28,7 +28,9 @@ const userSchema = mongoose.Schema({
     },
     image: {
         type: String,
-        default: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR39nRvqJ1LdD6_Gi8DYLMqhQGRnkj44wKaDTgmappVP8WHh2bLIA'
+        path: String,
+        originalName: String,
+        default: 'avatar.png'
     },
     career:{
         type: String,

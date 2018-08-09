@@ -6,7 +6,7 @@
 
     <div class="row mb-3 headerProfile">
         <div class="col-4">
-            <img src="{{user.image}}" alt="profileImg">
+            <img src="/documents/{{user.image}}" alt="profileImg">
         </div>
         <div class="col-8">
             <div class="row">
@@ -26,7 +26,7 @@
             <div class="row displayInline mt-3">
                 <ul> 
                     <li><a href="/users/{{user._id}}/friends/list">Friends <span>{{user.numberOfFriends}}</span></a></li>
-                    <li>Photos</li>
+                    <li><a href="">Gallery</a></li>
                 </ul>
             </div>
             {{/if}}
@@ -36,22 +36,21 @@
     
     {{#isOwneredByOwnSession user session}}
     <div class="row">
-        <div class="col-10">
+        <div class="col-12">
             <div class="postWrapper borderRadius m-3 border" style="padding:5px;">
-                <form action="/users/{{user.id}}/posts/create" method="POST">
+                <form action="/users/{{user.id}}/posts/create" method="POST" enctype="multipart/form-data">
 
                     <div class="row">
-                        <div class="col-4">
-                            <img src="{{user.image}}" class="imagePost" alt="image">
-                        </div>
+                        <div class="col-12">
 
-                        <div class="col-8 p-3">
+                            <input class="form-control {{#if errors.title}}is-invalid{{/if}}" style="" id="text" maxlength="18" name="title" rows="7" placeholder="Title"/>
 
-                            <input type="text" class="form-control {{#if errors.title}}is-invalid{{/if}}" placeholder="Title" name="title" style="width: 70%; border: none;" class="form-control"/>
-                            {{#if errors.title}} <small class="red">{{errors.title}}</small>{{/if}}
-
-                            <textarea class="form-control {{#if errors.text}}is-invalid{{/if}}" style="width: 90%;" id="text" name="text" rows="7" placeholder="Create a post"></textarea>
+                            <textarea class="form-control {{#if errors.text}}is-invalid{{/if}}" style="" id="text" name="text" rows="7" placeholder="Create a post"></textarea>
                              {{#if errors.text}} <small class="red">{{errors.text}}</small>{{/if}}
+                            
+                            <div class="input-group mb-3">
+                                <input type="file" class="form-control" name="image" style="border:none;">
+                            </div>  
 
                         </div>
                     </div>
@@ -74,9 +73,9 @@
 
  {{/isOwneredByOwnSession}} 
     
-    {{#if posts}}
+    {{!-- {{#if posts}} --}}
         {{> posts}}
-        {{else}}
+        {{!-- {{else}}
         <div class="alert alert-danger">{{user.name}} has not done any post yet</div>
-    {{/if}}
+    {{/if}} --}}
 </div>

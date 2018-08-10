@@ -145,8 +145,6 @@ nav{
   left: 20px;
 }
 
-
-
 .positionImageProfile{
   width: 200px;
   position: absolute;
@@ -164,7 +162,6 @@ nav{
   color: white;
 }
 
-
 input[type='file'] {
   /* opacity:0    */
   width: 95px; 
@@ -174,7 +171,6 @@ input[type='file'] {
   height: 22px;
   line-height: 0;
 }
-
 
 input{
   margin: 5px 0;

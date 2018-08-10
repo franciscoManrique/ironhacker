@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const postsSchema = mongoose.Schema({
     title: {
         type: String,
-        maxlength: 18
+        maxlength: 40
     },
     text: {
         type: String,

@@ -1,9 +1,7 @@
 <nav class="main-nav">
-    <div class="row">
-     <div class="col-1 mt-2">
-        <a href="/{{session._id}}"><i class="fab fa-pied-piper"></i></a>
-    </div>
-    <div class="col-5">
+   <div class="container-fluid">
+        <div class="row">
+    <div class="col-6">
             <form action='/users/list' method="GET">
                 <input type="text" class="form-control" id="name" placeholder="find a friend" name="name">
             </form>
@@ -14,7 +12,7 @@
     {{#isAdmin session}}
     {{else}}
      <div class="col-1 mt-2">
-        <a href="/help/create"><i class="fas fa-info"></i></a>
+        <a href="/help/create"><i class="fas fa-question"></i></i></a>
     </div>
     {{/isAdmin}}
 
@@ -31,4 +29,5 @@
          </form>
     </div>
 </div>
+   </div>
 </nav>

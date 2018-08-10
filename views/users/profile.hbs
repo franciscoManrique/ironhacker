@@ -11,10 +11,17 @@
             <img src="/documents/{{user.image}}" alt="userImage" style="width:250px; height: 200px;">
             {{else}}
             <div class="col-12 backgroundImageContainer">
+
               <img src="{{#if user.background}}/documents/{{user.background}}{{else}}/documents/{{user.background}}{{/if}} "alt="backgroundImage" class="backgroundImageProfile">
               <img src="/documents/{{user.image}}" alt="imageProfile" class="positionImageProfile">
               <div class="centerName"><h1>{{upperCase user.name}} <br> {{upperCase user.lastname}}</h1></div>
               <div class="centerFriends"><a href="/users/{{user._id}}/friends/list" style="color:white;">Friends {{user.numberOfFriends}}</a></div>
+           
+               <div class="centerCamera">
+              <label for="upload-photo" class="labelPointer"><i class="fas fa-camera whiteCamera"></i></qlabel>
+              <input type="file" class="form-control" name="image" style="border:none;" id="upload-photo">
+              </div>
+
             </div>
          {{/if}}
     </div>
@@ -26,14 +33,6 @@
     </div>
     
     {{#isOwneredByOwnSession user session}}
-
-
-    {{!-- <form action="/users/{{user.id}}/edit" method="POST" enctype="multipart/form-data">
-      <input type="file" class="form-control" name="image">
-      <button type="submit" class="btn btn-primary btn-sm">Upload background</button>
-    </form> --}}
-
-
 
     <div class="row post">
         <div class="col-12">
@@ -47,9 +46,12 @@
 
                             <textarea class="form-control {{#if errors.text}}is-invalid{{/if}}" style="" id="text" name="text" rows="7" placeholder="Create a post"></textarea>
                              {{#if errors.text}} <small class="red">{{errors.text}}</small>{{/if}}
-                            
+
                             <div class="input-group mb-3">
-                                <input type="file" class="form-control" name="image" style="border:none;">
+                                <label for="upload-photo" class="labelPointer">
+                                    <i class="fas fa-camera blackCamera"></i>
+                                </label>
+                                <input type="file" class="form-control" name="image" style="border:none;" id="upload-photo">
                             </div>  
 
                         </div>

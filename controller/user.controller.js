@@ -181,6 +181,9 @@ module.exports.update = (req, res, next) => {
 };
 
 module.exports.doUpdate = (req, res, next) => {
+  console.log('DO UPDATE');
+  console.log(req.file);
+  
   const id = req.params.id;
   
   const criteria = {
@@ -190,6 +193,7 @@ module.exports.doUpdate = (req, res, next) => {
   if (req.file) {
     criteria.image = req.file.filename;
   }
+  
   
   delete req.body.password;
   if (req.user.role !== constants.user.ADMIN) {

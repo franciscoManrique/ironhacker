@@ -38,7 +38,7 @@ module.exports = (hbs) => {
     });
     
     hbs.registerHelper('isOwneredByOwnSession', function(user, session, options){     
-        if (user && (user.id == session._id || session.role === constants.user.ADMIN)) {                                    
+        if (user && (user.id == session._id)) {                                    
             return options.fn(this);
         } else{                                                
             return options.inverse(this);

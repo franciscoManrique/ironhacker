@@ -67,7 +67,8 @@ module.exports.blockFriendList = (req, res, next) =>{
         ]
     })
     .then(friendship => {
-        if (friendship) {
+        
+        if (friendship || ownerId.equals(visiting)) {
             next();
         } else {
             next(createError(403, 'insufficient privilages'));

@@ -32,6 +32,12 @@ const userSchema = mongoose.Schema({
         originalName: String,
         default: 'avatar.png'
     },
+    background: {
+        type: String,
+        path: String,
+        originalName: String,
+        default: 'background.jpg'
+    },
     career:{
         type: String,
         maxlength: 40

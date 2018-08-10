@@ -79,6 +79,23 @@ module.exports.acceptFriendship = (req, res, next) => {
     });
 };
 
+module.exports.rejectFriendship = (req, res, next) => { 
+    console.log(req.params);
+       
+    Friendship.findByIdAndRemove(req.params.id)
+    .then(()=>{
+        res.redirect(`/friendship/${req.user._id}/list`)
+    })
+    .catch(error => {         
+        if (error instanceof mongoose.Error.CastError) {
+            next(createError(404));
+        } else {            
+            next(error);
+        }
+    });
+};
+
+
 module.exports.doDelete = (req, res, next) => {
     
     Promise.all([

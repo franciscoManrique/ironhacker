@@ -1,41 +1,37 @@
-<div class="container">
+<div class="container fluid">
 
     {{#if error.notFriend}} 
         <div class="alert alert-danger">{{error.notFriend}}</div>
     {{/if}}
 
     <div class="row mb-3 headerProfile">
-
-
-         {{#if error.notFriend}}
-            <img src="/documents/{{user.image}}" alt="userImage" style="width:250px; height: 200px;">
-            {{else}}
-            <div class="col-12 backgroundImageContainer">
-              <img src="{{#if user.background}}/documents/{{user.background}}{{else}}/documents/{{user.background}}{{/if}} "alt="backgroundImage" class="backgroundImageProfile">
-              <img src="/documents/{{user.image}}" alt="imageProfile" class="positionImageProfile">
-              <div class="centerName"><h1>{{upperCase user.name}} <br> {{upperCase user.lastname}}</h1></div>
-              <div class="centerFriends"><a href="/users/{{user._id}}/friends/list" style="color:white;">Friends {{user.numberOfFriends}}</a></div>
+        <div class="col-4">
+            <img src="/documents/{{user.image}}" alt="profileImg">
+        </div>
+        <div class="col-8">
+            <div class="row">
+                <a href="/users/{{user._id}}"><h1>{{upperCase user.name}} {{upperCase user.lastname}}</h1></a>
             </div>
-         {{/if}}
-    </div>
+            <div class="row">
+                <small>{{user.career}}</small>
+            </div>
 
-    <div class="row">
-        {{#isAdmin session}}
-            <a href="/users/{{../user.id}}/edit">Edit this user</a>
-        {{/isAdmin}}
+
+        {{#if error.notFriend}}
+        {{else}}
+            <div class="row displayInline mt-3">
+                <ul> 
+                    <li><a href="/users/{{user._id}}/friends/list">Friends <span>{{user.numberOfFriends}}</span></a></li>
+                    <li><a href="">Gallery</a></li>
+                </ul>
+            </div>
+            {{/if}}
+
+        </div>
     </div>
     
     {{#isOwneredByOwnSession user session}}
-
-
-    {{!-- <form action="/users/{{user.id}}/edit" method="POST" enctype="multipart/form-data">
-      <input type="file" class="form-control" name="image">
-      <button type="submit" class="btn btn-primary btn-sm">Upload background</button>
-    </form> --}}
-
-
-
-    <div class="row post">
+    <div class="row">
         <div class="col-12">
             <div class="postWrapper borderRadius m-3 border" style="padding:5px;">
                 <form action="/users/{{user.id}}/posts/create" method="POST" enctype="multipart/form-data">
@@ -59,9 +55,6 @@
             </div>
         </div>
     </div>
-
-    
-
     {{else}}
 
     {{#if error.notFriend}}
